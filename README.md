@@ -13,5 +13,6 @@ HOW TO RUN
 2) node main.js
 
 License
+
 The whole program is of MIT License.
 
