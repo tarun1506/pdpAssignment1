@@ -1,6 +1,6 @@
-import { exit } from "process";
 import PromptManager from "./PromptManager.js";
 import readline from 'readline';
+
 
 const myPromptManager = new PromptManager();
 
@@ -41,45 +41,42 @@ myPromptManager.showAllInteractions();
 console.log("======================================");
 
 
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
-function getUserInput() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
+console.log("1. Delete prompt by index");
+console.log("2. Delete all prompts");
+console.log("3. Show all prompts");
+console.log("4. Exit");
 
-  console.log("1. Delete prompt by index");
-  console.log("2. Delete all prompts");
-  console.log("3. Show all prompts");
-  console.log("4. Exit");
-  rl.question('Please enter your choice: ', (input) => {
-    switch(input){
-      case "1":
-        rl.question('Please enter index of the prompt to be deleted: ', (input) => {
-          console.log(`Deleting prompt at index ${input}`);
-        });
-        myPromptManager.deletePromptByIndex(input);
-        break;
-      case "2":
-        myPromptManager.deleteAllPrompts();
-        break;
-      case "3":
-        myPromptManager.showAllInteractions();
-        break;
-      case "4":
-        console.log("Exiting !!");
-        exit();
-        break
-      default:
-        console.log("Invalid choice");
-        exit();
-      }
-    });
-}
-
-getUserInput();
-  
-
-
-
-
+rl.question('Please enter your choice: ', (input) => {
+  switch(input){
+    case "1":
+      rl.question('Please enter index of the prompt to be deleted: ', (index) => {
+        console.log(`Deleting prompt at index ${index}`);
+        myPromptManager.deletePromptByIndex(index);
+        rl.close();
+      });
+      break;
+    case "2":
+      myPromptManager.deleteAllPrompts();
+      console.log("All prompts deleted");
+      rl.close();
+      break;
+    case "3":
+      myPromptManager.showAllInteractions();
+      rl.close();
+      break;
+    case "4":
+      console.log("Exiting !!");
+      rl.close();
+      process.exit(0);
+      break;
+    default:
+      console.log("Invalid choice");
+      rl.close();
+      process.exit(1);
+  }
+});
